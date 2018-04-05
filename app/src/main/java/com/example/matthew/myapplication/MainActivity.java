@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
         editText = findViewById(R.id.editText);
 
-        recyclerView = findViewById(R.id.constrained_list_view);
-
+        recyclerView = findViewById(R.id.ListView);
+// Good resource https://www.sitepoint.com/mastering-complex-lists-with-the-android-recyclerview/
         recyclerViewLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
 
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         String text = editText.getText().toString();
         ExampleEntity newEntity = new ExampleEntity();
         newEntity.setName(text);
+        newEntity.setCost(values.size());
         values.add(newEntity);
         updateListView();
     }

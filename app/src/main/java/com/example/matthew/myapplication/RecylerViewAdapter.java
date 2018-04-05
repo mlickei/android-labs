@@ -44,7 +44,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecylerViewAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.textView.setText(dataset.get(position).getName());
-        holder.textView.setText(Double.toString(dataset.get(position).getCost());
+        holder.textView.setText(Double.toString(dataset.get(position).getCost()));
     }
 
     @Override
