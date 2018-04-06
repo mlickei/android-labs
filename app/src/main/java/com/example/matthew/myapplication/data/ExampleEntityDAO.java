@@ -1,5 +1,6 @@
 package com.example.matthew.myapplication.data;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -15,7 +16,7 @@ import java.util.List;
 public interface ExampleEntityDAO {
 
     @Query("SELECT * FROM entry;")
-    List<ExampleEntity> getAll();
+    LiveData<List<ExampleEntity>> getAll();
 
     @Insert
     void insertAll(ExampleEntity... entries);

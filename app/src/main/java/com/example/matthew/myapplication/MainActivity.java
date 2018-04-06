@@ -1,5 +1,6 @@
 package com.example.matthew.myapplication;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,10 +8,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import com.example.matthew.myapplication.data.AppDatabase;
 import com.example.matthew.myapplication.data.ExampleEntity;
+import com.example.matthew.myapplication.viewModel.ExampleViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
+    private ExampleViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +34,18 @@ public class MainActivity extends AppCompatActivity {
         editText = findViewById(R.id.editText);
 
         recyclerView = findViewById(R.id.ListView);
-// Good resource https://www.sitepoint.com/mastering-complex-lists-with-the-android-recyclerview/
+        // Good resource https://www.sitepoint.com/mastering-complex-lists-with-the-android-recyclerview/
         recyclerViewLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
 
         recyclerViewAdapter = new RecylerViewAdapter(values);
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "example-db").build();
+        viewModel = ViewModelProviders.of(this).get(ExampleViewModel.class);
+        viewModel.getEntities().observe(this, entities -> {
+            values.addAll(entities);
+            updateListView();
+        });
     }
 
     public void addItem(View v) {
@@ -47,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         ExampleEntity newEntity = new ExampleEntity();
         newEntity.setName(text);
         newEntity.setCost(values.size());
-        values.add(newEntity);
-        updateListView();
+        //FIXME this inserts all again for some reason but hey whatever.
+        viewModel.insertEntities(newEntity);
     }
 
     public void updateListView() {
